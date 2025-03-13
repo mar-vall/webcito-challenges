@@ -6,9 +6,9 @@
   background: var(--Bg, #172030);
 
   /* font-synthesis: none; */
-  text-rendering: optimizeLegibility;
+  /* text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
 }
 
 body {
@@ -25,17 +25,20 @@ button {
   border-radius: 8px;
   color: white;
   background: var(--Button, #172030);
+  border-width: 0;
 
-  /* Shadow */
-  box-shadow: 9px 9px 16px 0px rgba(0, 0, 0, 0.24),
-    -4px -4px 16px 0px rgba(73, 73, 73, 0.4);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px; /* 100% */
+  
   cursor: pointer;
-  /* transition: border-color 0.25s; */
+  transition: box-shadow 0.25s;
 }
 button:hover {
-  border-color: #646cff;
-}
-
+  /* Shadow */
+  box-shadow: 9px 9px 16px 0px rgba(0, 0, 0, 0.24),
+    -4px -4px 16px 0px rgba(73, 73, 73, 0.4); 
+} 
 
 /* @media (prefers-color-scheme: light) {
   :root {

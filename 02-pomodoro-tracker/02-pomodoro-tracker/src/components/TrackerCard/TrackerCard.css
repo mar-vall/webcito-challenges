@@ -8,17 +8,46 @@
   border-radius: 16px;
   background: var(--Black, #141c27);
   position: fixed;
-  top: 20%;
-  left: 38%;
+  top: 50%; /* Lo coloca en el 50% del alto del contenedor */
+    left: 50%; /* Lo coloca en el 50% del ancho del contenedor */
+    transform: translate(
+      -50%,
+      -50%
+    ); /* Lo mueve hacia atrás un 50% de su propio tamaño */
+  z-index: 1;
   /* Shadow */
   box-shadow: 9px 9px 16px 0px rgba(0, 0, 0, 0.24),
     -4px -4px 16px 0px rgba(73, 73, 73, 0.4);
 }
 
+@media screen and (max-width: 426px) {
+  .tracker-card__container {
+    padding: 24px;
+    position: absolute;
+  }
+}
+
 h1 {
+  margin: 0;
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 }
 
+.tracker-card__circularProgress {
+  height: 244px;
+  width: 244px;
+}
+
+.button-secondary {
+  color: var(--Red, #f94409);
+}
+
+.button-disabled {
+  opacity: 0.2;
+  cursor: default;
+  /* Shadow */
+  box-shadow: 9px 9px 16px 0px rgba(0, 0, 0, 0.24),
+    -4px -4px 16px 0px rgba(73, 73, 73, 0.4);
+}

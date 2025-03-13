@@ -25,7 +25,7 @@ Para completar el reto, marca los siguientes hitos:
 - [ ] Cambiar el texto del botón de **Iniciar/Pausar Pomodoro** según el estado del temporizador.
 - [ ] Permitir que el usuario inicie un **Break** mientras está en un Pomodoro.
 - [ ] Mostrar un **contador** de Pomodoros/Breaks completados.
-- [ ] Asegurar que el diseño sea **responsive**.
+- [-] Asegurar que el diseño sea **responsive**.
 - [ ] Implementar una forma de **desplegar** la aplicación en línea.
 
 ## 🚀 Objetivos secundarios
