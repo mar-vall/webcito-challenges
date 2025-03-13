@@ -1,9 +1,12 @@
 import "./App.css";
+import TrackerCard from "./components/TrackerCard/TrackerCard";
 
 function App() {
   return (
     <>
-      <h1>Vite + React</h1>
+      <div className="circle__right"></div>
+      <TrackerCard/>
+      <div className="circle__left"></div>
     </>
   );
 }

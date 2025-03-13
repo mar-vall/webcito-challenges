@@ -1,0 +1,29 @@
+.circle__right {
+  width: 400px;
+  height: 400px;
+  flex-shrink: 0;
+  position: fixed;
+  top: -10%;
+  right: -5%;
+  border-radius: 400px;
+  background: #172030;
+
+  /* Shadow */
+  box-shadow: 9px 9px 16px 0px rgba(0, 0, 0, 0.24),
+    -4px -4px 16px 0px rgba(73, 73, 73, 0.4);
+}
+
+.circle__left {
+  width: 400px;
+  height: 400px;
+  flex-shrink: 0;
+  border-radius: 400px;
+  background: #1a2538;
+  position: fixed;
+  bottom: -10%;
+  left: -5%;
+
+  /* Shadow */
+  box-shadow: 9px 9px 16px 0px rgba(0, 0, 0, 0.24),
+    -4px -4px 16px 0px rgba(73, 73, 73, 0.4);
+}
