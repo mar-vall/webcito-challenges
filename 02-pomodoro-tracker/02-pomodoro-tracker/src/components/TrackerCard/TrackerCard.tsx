@@ -27,9 +27,12 @@ const TrackerCard = () => {
 
   // Función para manejar la finalización del temporizador
   const handleComplete = useCallback(() => {
-    toggleMode();
+    setMode((prevMode) =>
+      prevMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO
+    );
     setIsRunning(false);
-  }, [toggleMode]);
+  }, []);
+  
 
   // Función para iniciar o cambiar el modo del temporizador
   const handleStartOrToggleMode = () => {
@@ -39,13 +42,6 @@ const TrackerCard = () => {
       toggleMode();
     }
     setIsRunning(true);
-  };
-
-  // Función para cambiar el modo manualmente
-  const handleChangeMode = (newMode: string) => {
-    if (newMode === mode) return; // No hacer nada si el modo es el mismo
-    setMode(newMode);
-    setIsRunning(false); // Detener el temporizador actual
   };
 
   // Determinar la duración actual basada en el modo
@@ -59,8 +55,6 @@ const TrackerCard = () => {
           duration={currentDuration}
           onComplete={handleComplete}
           isRunning={isRunning}
-          mode={mode}
-          onChangeMode={handleChangeMode}
           color={mode === MODES.POMODORO ? "#E046D7" : "#3AB499"}
         />
       </div>

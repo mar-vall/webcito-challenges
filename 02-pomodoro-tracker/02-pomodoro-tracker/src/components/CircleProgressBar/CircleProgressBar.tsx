@@ -5,8 +5,6 @@ interface CircleProgressBarProps {
   duration: number;
   onComplete: () => void;
   isRunning: boolean;
-  mode: string;
-  onChangeMode: (newMode: string) => void;
   color: string;
 }
 
@@ -20,9 +18,7 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   duration,
   onComplete,
   isRunning,
-  mode,
-  onChangeMode,
-  color, 
+  color,
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
   const circumference = 2 * Math.PI * 45; // Circunferencia del círculo (radio = 45)
@@ -36,33 +32,29 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   // Manejar el temporizador (iniciar/detener)
   useEffect(() => {
     if (isRunning) {
-      // Iniciar el temporizador si está en ejecución
       timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev === 0) {
-            clearInterval(timerRef.current!); // Detener el temporizador
-            onComplete(); // Llamar a onComplete
-            const nextMode = mode === "Pomodoro" ? "Break" : "Pomodoro";
-            onChangeMode(nextMode); // Cambiar el modo en el padre
-            return 0;
+            clearInterval(timerRef.current!);
+            onComplete(); // Dejar que el padre maneje el cambio de modo
+            return duration; // Reiniciar el tiempo
           }
           return prev - 1;
         });
-      }, 1000);
+      }, 10);
     } else {
-      // Detener el temporizador si está pausado
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
     }
-
-    // Limpiar el intervalo al desmontar el componente o cuando isRunning cambia
+  
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
     };
-  }, [isRunning, onComplete, mode, onChangeMode]);
+  }, [isRunning, onComplete, duration]);
+  
 
   const strokeDashoffset = ((duration - timeLeft) / duration) * circumference;
 
@@ -76,7 +68,7 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
           r="45"
           fill="transparent"
           strokeOpacity="0.2"
-          stroke={color} // Usar el color dinámico
+          stroke={color}
           strokeWidth="5"
         />
         {/* Círculo de progreso */}
@@ -85,7 +77,7 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
           cy="50"
           r="45"
           fill="transparent"
-          stroke={color} // Usar el color dinámico
+          stroke={color}
           strokeWidth="6"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
