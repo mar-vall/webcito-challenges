@@ -7,6 +7,7 @@ interface CircleProgressBarProps {
   isRunning: boolean;
   mode: string;
   onChangeMode: (newMode: string) => void;
+  color: string;
 }
 
 const formatTime = (seconds: number) => {
@@ -21,6 +22,7 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   isRunning,
   mode,
   onChangeMode,
+  color, 
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
   const circumference = 2 * Math.PI * 45; // Circunferencia del círculo (radio = 45)
@@ -28,7 +30,7 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
 
   // Reiniciar el tiempo cuando cambia la duración
   useEffect(() => {
-    setTimeLeft(duration); // Reiniciar el tiempo restante
+    setTimeLeft(duration);
   }, [duration]);
 
   // Manejar el temporizador (iniciar/detener)
@@ -62,15 +64,6 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
     };
   }, [isRunning, onComplete, mode, onChangeMode]);
 
-  // Limpiar el intervalo al desmontar el componente
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
-
   const strokeDashoffset = ((duration - timeLeft) / duration) * circumference;
 
   return (
@@ -83,7 +76,7 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
           r="45"
           fill="transparent"
           strokeOpacity="0.2"
-          stroke={mode === "Pomodoro" ? "#E046D7" : "#3AB499"}
+          stroke={color} // Usar el color dinámico
           strokeWidth="5"
         />
         {/* Círculo de progreso */}
@@ -92,7 +85,7 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
           cy="50"
           r="45"
           fill="transparent"
-          stroke={mode === "Pomodoro" ? "#E046D7" : "#3AB499"}
+          stroke={color} // Usar el color dinámico
           strokeWidth="6"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
@@ -100,8 +93,12 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
           transform="rotate(-90 50 50)"
         />
       </svg>
-      <div className="timer-text">{formatTime(timeLeft)}</div>
-      <div className="timer-info">{isRunning ? "Session Running" : "Session Paused"}</div>
+      <div className="timer-text" style={{ color }}>
+        {formatTime(timeLeft)}
+      </div>
+      <div className="timer-info" style={{ color }}>
+        {isRunning ? "Session Running" : "Session Paused"}
+      </div>
     </div>
   );
 };

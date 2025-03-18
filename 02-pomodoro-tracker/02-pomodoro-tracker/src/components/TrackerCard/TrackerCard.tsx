@@ -61,6 +61,7 @@ const TrackerCard = () => {
           isRunning={isRunning}
           mode={mode}
           onChangeMode={handleChangeMode}
+          color={mode === MODES.POMODORO ? "#E046D7" : "#3AB499"}
         />
       </div>
       <button onClick={handleStartOrToggleMode}>
@@ -69,7 +70,7 @@ const TrackerCard = () => {
           : `Start ${mode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO}`}
       </button>
       <button
-        className="button-secondary"
+        className={`button-secondary ${isFirstStart ? "button-disabled" : ""}`}
         onClick={() => setIsRunning(!isRunning)}
         disabled={isFirstStart}
       >

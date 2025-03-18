@@ -21,11 +21,11 @@ Cuando tu energía se concentra en una sola cosa, te vuelves más poderoso. Pomo
 ## 🎯 Objetivos principales
 Para completar el reto, marca los siguientes hitos:
 
-- [ ] Implementar la cuenta regresiva de **25 minutos** para Pomodoro y **5 minutos** para Break.
-- [ ] Cambiar el texto del botón de **Iniciar/Pausar Pomodoro** según el estado del temporizador.
-- [ ] Permitir que el usuario inicie un **Break** mientras está en un Pomodoro.
+- [x] Implementar la cuenta regresiva de **25 minutos** para Pomodoro y **5 minutos** para Break.
+- [x] Cambiar el texto del botón de **Iniciar/Pausar Pomodoro** según el estado del temporizador.
+- [x] Permitir que el usuario inicie un **Break** mientras está en un Pomodoro.
 - [ ] Mostrar un **contador** de Pomodoros/Breaks completados.
-- [-] Asegurar que el diseño sea **responsive**.
+- [x] Asegurar que el diseño sea **responsive**.
 - [ ] Implementar una forma de **desplegar** la aplicación en línea.
 
 ## 🚀 Objetivos secundarios
