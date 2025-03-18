@@ -3,69 +3,77 @@ import "./TrackerCard.css";
 import "react-circular-progressbar/dist/styles.css";
 import CircleProgressBar from "../CircleProgressBar/CircleProgressBar";
 
+const MODES = {
+  POMODORO: "Pomodoro",
+  BREAK: "Break",
+};
+
+const DURATIONS = {
+  POMODORO: 25 * 60,
+  BREAK: 5 * 60,
+};
+
 const TrackerCard = () => {
   const [isRunning, setIsRunning] = useState(false);
-  const [workDuration] = useState(25 * 60); // 25 minutos en segundos
-  const [breakDuration] = useState(5 * 60); // 5 minutos en segundos
-  const [isWorkTime, setIsWorkTime] = useState(true);
-  const [mode, setMode] = useState("Pomodoro");
+  const [mode, setMode] = useState(MODES.POMODORO);
   const [isFirstStart, setIsFirstStart] = useState(true);
 
-  // Memoriza la función handleComplete usando useCallback
-  const handleComplete = useCallback(() => {
-    setIsWorkTime((prev) => !prev);
-    setIsRunning(false);
-    setMode((prevMode) => (prevMode === "Pomodoro" ? "Break" : "Pomodoro"));
-  }, []); // No hay dependencias, por lo que la función no se redefine
+  // Función para cambiar entre modos
+  const toggleMode = useCallback(() => {
+    setMode((prevMode) =>
+      prevMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO
+    );
+  }, []);
 
-  const startTimer = () => {
+  // Función para manejar la finalización del temporizador
+  const handleComplete = useCallback(() => {
+    toggleMode();
+    setIsRunning(false);
+  }, [toggleMode]);
+
+  // Función para iniciar o cambiar el modo del temporizador
+  const handleStartOrToggleMode = () => {
     if (isFirstStart) {
       setIsFirstStart(false);
+    } else {
+      toggleMode();
     }
-
-    // Cambiar de modo si el temporizador está en ejecución
-    if (isRunning) {
-      const newMode = mode === "Pomodoro" ? "Break" : "Pomodoro";
-      setMode(newMode);
-      setIsWorkTime(newMode === "Pomodoro");
-    }
-
-    // Iniciar o reiniciar el temporizador
     setIsRunning(true);
   };
 
+  // Función para cambiar el modo manualmente
   const handleChangeMode = (newMode: string) => {
     if (newMode === mode) return; // No hacer nada si el modo es el mismo
-
-    // Cambiar el modo y reiniciar el temporizador
     setMode(newMode);
-    setIsWorkTime(newMode === "Pomodoro");
     setIsRunning(false); // Detener el temporizador actual
   };
+
+  // Determinar la duración actual basada en el modo
+  const currentDuration = mode === MODES.POMODORO ? DURATIONS.POMODORO : DURATIONS.BREAK;
 
   return (
     <div className="tracker-card__container">
       <h1>Pomodoro Tracker</h1>
       <div className="tracker-card__circularProgress">
         <CircleProgressBar
-          duration={isWorkTime ? workDuration : breakDuration}
+          duration={currentDuration}
           onComplete={handleComplete}
           isRunning={isRunning}
           mode={mode}
           onChangeMode={handleChangeMode}
         />
       </div>
-      <button onClick={startTimer}>
+      <button onClick={handleStartOrToggleMode}>
         {isFirstStart
-          ? "Start Pomodoro"
-          : `Start ${mode === "Pomodoro" ? "Break" : "Pomodoro"}`}
+          ? `Start ${MODES.POMODORO}`
+          : `Start ${mode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO}`}
       </button>
       <button
         className="button-secondary"
         onClick={() => setIsRunning(!isRunning)}
-        disabled={isFirstStart} // Solo deshabilitado en la primera vez
+        disabled={isFirstStart}
       >
-        {isRunning ? "Pause" : "Resume"}
+        {isRunning ? `Pause ${mode}` : `Resume ${mode}`}
       </button>
     </div>
   );
