@@ -23,6 +23,11 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   const [timeLeft, setTimeLeft] = useState(duration);
   const circumference = 2 * Math.PI * 45; // Circunferencia del círculo (radio = 45)
   const timerRef = useRef<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null); // Referencia para el audio
+
+  useEffect(() => {
+    audioRef.current = new Audio("/bell-ringing-ii-98323.mp3"); // Ruta al archivo de sonido en la carpeta public
+  }, []);
 
   // Reiniciar el tiempo cuando cambia la duración
   useEffect(() => {
@@ -37,6 +42,10 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
           if (prev === 0) {
             clearInterval(timerRef.current!);
             onComplete(); // Dejar que el padre maneje el cambio de modo
+
+            if (audioRef.current) {
+              audioRef.current.play();
+            }
             return duration; // Reiniciar el tiempo
           }
           return prev - 1;
