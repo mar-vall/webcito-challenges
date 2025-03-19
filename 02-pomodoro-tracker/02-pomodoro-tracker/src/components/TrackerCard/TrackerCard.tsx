@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import "./TrackerCard.css";
 import "react-circular-progressbar/dist/styles.css";
 import CircleProgressBar from "../CircleProgressBar/CircleProgressBar";
@@ -44,6 +44,23 @@ const TrackerCard = () => {
     setIsRunning(true);
   };
 
+  // Solicitar permiso para notificaciones al cargar el componente
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      if ("Notification" in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          console.log("Permiso para notificaciones concedido.");
+        } else {
+          console.log("Permiso para notificaciones denegado.");
+        }
+      } else {
+        console.log("Este navegador no soporta notificaciones.");
+      }
+    };
+    requestNotificationPermission();
+  }, []);
+
   // Determinar la duración actual basada en el modo
   const currentDuration = mode === MODES.POMODORO ? DURATIONS.POMODORO : DURATIONS.BREAK;
 
@@ -56,6 +73,7 @@ const TrackerCard = () => {
           onComplete={handleComplete}
           isRunning={isRunning}
           color={mode === MODES.POMODORO ? "#E046D7" : "#3AB499"}
+          mode={mode}
         />
       </div>
       <button onClick={handleStartOrToggleMode}>

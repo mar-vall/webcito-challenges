@@ -6,6 +6,7 @@ interface CircleProgressBarProps {
   onComplete: () => void;
   isRunning: boolean;
   color: string;
+  mode: string;
 }
 
 const formatTime = (seconds: number) => {
@@ -19,14 +20,22 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   onComplete,
   isRunning,
   color,
+  mode
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
   const circumference = 2 * Math.PI * 45; // Circunferencia del círculo (radio = 45)
   const timerRef = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null); // Referencia para el audio
 
+  // Función para mostrar una notificación
+  const showNotification = (title: string, options?: NotificationOptions) => {
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification(title, options);
+    }
+  }; 
+
   useEffect(() => {
-    audioRef.current = new Audio("/bell-ringing-ii-98323.mp3"); // Ruta al archivo de sonido en la carpeta public
+    audioRef.current = new Audio("/bell-ringing-ii-98323.mp3");
   }, []);
 
   // Reiniciar el tiempo cuando cambia la duración
@@ -46,6 +55,19 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
             if (audioRef.current) {
               audioRef.current.play();
             }
+
+            // Mostrar notificación
+            showNotification(
+              mode === "Pomodoro" ? "¡Pomodoro completado!" : "¡Descanso completado!",
+              {
+                body:
+                  mode === "Pomodoro"
+                    ? "Es hora de tomar un descanso."
+                    : "Es hora de volver al trabajo.",
+                icon: "/vite.svg",
+              }
+            );
+            
             return duration; // Reiniciar el tiempo
           }
           return prev - 1;
