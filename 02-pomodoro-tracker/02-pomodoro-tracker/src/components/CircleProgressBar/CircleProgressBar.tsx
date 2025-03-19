@@ -20,19 +20,21 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   onComplete,
   isRunning,
   color,
-  mode
+  mode,
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
   const circumference = 2 * Math.PI * 45; // Circunferencia del círculo (radio = 45)
   const timerRef = useRef<number | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null); // Referencia para el audio
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [breakCounter, setBreakCounter] = useState<number>(0);
+  const [pomodoroCounter, setPomodoroCounter] = useState<number>(0);
 
   // Función para mostrar una notificación
   const showNotification = (title: string, options?: NotificationOptions) => {
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification(title, options);
     }
-  }; 
+  };
 
   useEffect(() => {
     audioRef.current = new Audio("/bell-ringing-ii-98323.mp3");
@@ -58,7 +60,9 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
 
             // Mostrar notificación
             showNotification(
-              mode === "Pomodoro" ? "¡Pomodoro completado!" : "¡Descanso completado!",
+              mode === "Pomodoro"
+                ? "¡Pomodoro completado!"
+                : "¡Descanso completado!",
               {
                 body:
                   mode === "Pomodoro"
@@ -67,7 +71,10 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
                 icon: "/vite.svg",
               }
             );
-            
+
+            mode === "Pomodoro"
+              ? setPomodoroCounter(pomodoroCounter + 1)
+              : setBreakCounter(breakCounter + 1);
             return duration; // Reiniciar el tiempo
           }
           return prev - 1;
@@ -78,14 +85,13 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
         clearInterval(timerRef.current);
       }
     }
-  
+
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
     };
   }, [isRunning, onComplete, duration]);
-  
 
   const strokeDashoffset = ((duration - timeLeft) / duration) * circumference;
 
@@ -120,7 +126,11 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
         {formatTime(timeLeft)}
       </div>
       <div className="timer-info" style={{ color }}>
-        {isRunning ? "Session Running" : "Session Paused"}
+        {isRunning
+          ? mode === "Pomodoro"
+            ? `${pomodoroCounter}x`
+            : `${breakCounter}x`
+          : "Session Paused"}
       </div>
     </div>
   );

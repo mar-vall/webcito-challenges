@@ -24,14 +24,14 @@ Para completar el reto, marca los siguientes hitos:
 - [x] Implementar la cuenta regresiva de **25 minutos** para Pomodoro y **5 minutos** para Break.
 - [x] Cambiar el texto del botón de **Iniciar/Pausar Pomodoro** según el estado del temporizador.
 - [x] Permitir que el usuario inicie un **Break** mientras está en un Pomodoro.
-- [ ] Mostrar un **contador** de Pomodoros/Breaks completados.
+- [x] Mostrar un **contador** de Pomodoros/Breaks completados.
 - [x] Asegurar que el diseño sea **responsive**.
 - [ ] Implementar una forma de **desplegar** la aplicación en línea.
 
 ## 🚀 Objetivos secundarios
 Si quieres llevar tu implementación al siguiente nivel, intenta cumplir con estos retos adicionales:
 
-- [ ] Implementar notificaciones sonoras al finalizar cada ciclo de Pomodoro o Break
+- [x] Implementar notificaciones sonoras al finalizar cada ciclo de Pomodoro o Break
 - [ ] Añadir un historial de sesiones completadas utilizando almacenamiento local (localStorage)
 - [ ] Optimizar el rendimiento para conseguir un puntaje superior a 90 en PageSpeed Insights
 - [ ] Utilizar patrones avanzados de JavaScript como módulos, closures o el patrón Observer
