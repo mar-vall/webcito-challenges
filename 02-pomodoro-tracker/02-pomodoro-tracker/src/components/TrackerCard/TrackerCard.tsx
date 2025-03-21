@@ -31,8 +31,8 @@ const TrackerCard = () => {
       prevMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO
     );
     setIsRunning(false);
+    setIsFirstStart(false);
   }, []);
-  
 
   // Función para iniciar o cambiar el modo del temporizador
   const handleStartOrToggleMode = () => {
@@ -62,7 +62,8 @@ const TrackerCard = () => {
   }, []);
 
   // Determinar la duración actual basada en el modo
-  const currentDuration = mode === MODES.POMODORO ? DURATIONS.POMODORO : DURATIONS.BREAK;
+  const currentDuration =
+    mode === MODES.POMODORO ? DURATIONS.POMODORO : DURATIONS.BREAK;
 
   return (
     <div className="tracker-card__container">

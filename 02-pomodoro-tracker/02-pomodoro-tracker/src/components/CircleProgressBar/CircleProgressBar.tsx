@@ -26,8 +26,8 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   const circumference = 2 * Math.PI * 45; // Circunferencia del círculo (radio = 45)
   const timerRef = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [breakCounter, setBreakCounter] = useState<number>(0);
-  const [pomodoroCounter, setPomodoroCounter] = useState<number>(0);
+  const [breakCounter, setBreakCounter] = useState<number>(-1);
+  const [pomodoroCounter, setPomodoroCounter] = useState<number>(-2);
 
   // Función para mostrar una notificación
   const showNotification = (title: string, options?: NotificationOptions) => {
@@ -43,7 +43,15 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   // Reiniciar el tiempo cuando cambia la duración
   useEffect(() => {
     setTimeLeft(duration);
-  }, [duration]);
+  }, [duration, mode]);
+
+  useEffect(() => {
+    if (mode === "Pomodoro") {
+      setPomodoroCounter((prev) => prev + 1);
+    } else {
+      setBreakCounter((prev) => prev + 1);
+    }
+  }, [mode]);
 
   // Manejar el temporizador (iniciar/detener)
   useEffect(() => {
@@ -72,14 +80,11 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
               }
             );
 
-            mode === "Pomodoro"
-              ? setPomodoroCounter(pomodoroCounter + 1)
-              : setBreakCounter(breakCounter + 1);
             return duration; // Reiniciar el tiempo
           }
           return prev - 1;
         });
-      }, 10);
+      }, 100);
     } else {
       if (timerRef.current) {
         clearInterval(timerRef.current);
