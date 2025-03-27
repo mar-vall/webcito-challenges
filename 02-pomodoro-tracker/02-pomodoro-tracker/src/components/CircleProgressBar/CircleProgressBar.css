@@ -9,10 +9,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: var(--Pink, #e046d7);
   font-family: Roboto;
   font-size: 65px;
   font-style: normal;
   font-weight: 400;
+  line-height: normal;
+}
+
+.timer-info{
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, 30%);
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
   line-height: normal;
 }

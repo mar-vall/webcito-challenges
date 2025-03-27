@@ -1,6 +1,7 @@
 import { useReducer, useEffect, useRef } from "react";
 import "./TrackerCard.css";
 import "react-circular-progressbar/dist/styles.css";
+import { formatTime } from "./utils";
 
 const MODES = {
   POMODORO: "Pomodoro",
@@ -71,7 +72,7 @@ const TrackerCard = () => {
     if (state.currentState === "running") {
       intervalRef.current = setInterval(() => {
         dispatch({ type: "TICK" });
-      }, 10);
+      }, 100);
     } else if (
       state.currentState === "paused" ||
       state.currentState === "toStart"
@@ -95,23 +96,33 @@ const TrackerCard = () => {
   };
 
   const handleStop = () => {
-    dispatch({ type: "PAUSE" });
+    if (state.currentState === "running") {
+      dispatch({ type: "PAUSE" });
+    } else {
+      dispatch({ type: "START" });
+    }
   };
 
   const handleChange = () => {
-    dispatch({type: "CHANGE"})
+    dispatch({ type: "CHANGE" });
   };
 
   return (
     <div className="tracker-card__container">
       <h1>Pomodoro Tracker</h1>
       <div className="tracker-card__circularProgress">
-        <div className="timer-text">
-          {Math.floor(state.timeLeft / 60)}:
-          {(state.timeLeft % 60).toString().padStart(2, "0")}
+        <div
+          className="timer-text"
+          style={
+            state.currentMode === MODES.POMODORO
+              ? { color: "#E046D7" }
+              : { color: "#3AB499" }
+          }
+        >
+          {formatTime(state.timeLeft)}
         </div>
       </div>
-      {state.currentState === "running" ? (
+      {state.currentState === "running" || state.currentState !== "toStart" ? (
         <button onClick={handleChange}>
           Start{" "}
           {state.currentMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO}
@@ -119,8 +130,15 @@ const TrackerCard = () => {
       ) : (
         <button onClick={handleStart}>Start {state.currentMode}</button>
       )}
-      <button className="button-secondary" onClick={handleStop}>
-        Pause {state.currentMode}
+      <button
+        className={`button-secondary ${
+          state.currentState === "toStart" ? "button-disabled" : ""
+        }`}
+        onClick={handleStop}
+        disabled={state.currentState === "toStart"}
+      >
+        {state.currentState === "running" ? "Pause " : "Resume "}
+        {state.currentMode}
       </button>
     </div>
   );
