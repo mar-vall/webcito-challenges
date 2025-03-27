@@ -3,7 +3,6 @@ import "./CircleProgressBar.css";
 
 interface CircleProgressBarProps {
   duration: number;
-  onComplete: () => void;
   isRunning: boolean;
 }
 
@@ -15,7 +14,6 @@ const formatTime = (seconds: number) => {
 
 const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   duration,
-  onComplete,
   isRunning,
 }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
@@ -52,10 +50,8 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
 
   // Efecto para manejar la finalización del temporizador
   useEffect(() => {
-    if (timeLeft === 0) {
-      onComplete(); // Llamar a onComplete cuando el tiempo llegue a cero
-    }
-  }, [timeLeft, onComplete]);
+    
+  }, [timeLeft]);
 
   const strokeDashoffset = ((duration - timeLeft) / duration) * circumference;
 
