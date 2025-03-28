@@ -71,6 +71,7 @@ const setTimerReducer = (
 const TrackerCard = () => {
   const [state, dispatch] = useReducer(setTimerReducer, initialState);
   const intervalRef = useRef<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (state.currentState === "running") {
@@ -92,8 +93,53 @@ const TrackerCard = () => {
   useEffect(() => {
     if (state.timeLeft === 0 && state.currentState === "running") {
       dispatch({ type: "CHANGE" });
+
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
+      // Mostrar notificación
+      showNotification(
+        state.currentMode === "Pomodoro"
+          ? "¡Pomodoro completado!"
+          : "¡Descanso completado!",
+        {
+          body:
+            state.currentMode === "Pomodoro"
+              ? "Es hora de tomar un descanso."
+              : "Es hora de volver al trabajo.",
+          icon: "/vite.svg",
+        }
+      );
     }
   }, [state.timeLeft]);
+
+  // Solicitar permiso para notificaciones al cargar el componente
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      if ("Notification" in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          console.log("Permiso para notificaciones concedido.");
+        } else {
+          console.log("Permiso para notificaciones denegado.");
+        }
+      } else {
+        console.log("Este navegador no soporta notificaciones.");
+      }
+    };
+    requestNotificationPermission();
+  }, []);
+
+  useEffect(() => {
+    audioRef.current = new Audio("/bell-ringing-ii-98323.mp3");
+  }, []);
+
+  // Función para mostrar una notificación
+  const showNotification = (title: string, options?: NotificationOptions) => {
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification(title, options);
+    }
+  };
 
   const handleStart = () => {
     dispatch({ type: "START" });
