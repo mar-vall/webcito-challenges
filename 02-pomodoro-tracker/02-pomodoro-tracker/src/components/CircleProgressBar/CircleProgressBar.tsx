@@ -1,57 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import "./CircleProgressBar.css";
 
 interface CircleProgressBarProps {
   duration: number;
-  isRunning: boolean;
+  timeLeft: number;
 }
-
-const formatTime = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-};
 
 const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
   duration,
-  isRunning,
+  timeLeft,
 }) => {
-  const [timeLeft, setTimeLeft] = useState(duration);
   const circumference = 2 * Math.PI * 45; // Circunferencia del círculo (radio = 45)
-  const timerRef = useRef<number | null>(null);
-
-  // Efecto para manejar el temporizador
-  useEffect(() => {
-    if (isRunning) {
-      // Iniciar el temporizador si está en ejecución
-      timerRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev === 0) {
-            clearInterval(timerRef.current!);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 10);
-    } else {
-      // Detener el temporizador si está pausado
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    }
-
-    // Limpiar el intervalo al desmontar el componente
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [isRunning]);
-
-  // Efecto para manejar la finalización del temporizador
-  useEffect(() => {
-    
-  }, [timeLeft]);
 
   const strokeDashoffset = ((duration - timeLeft) / duration) * circumference;
 
@@ -82,7 +41,6 @@ const CircleProgressBar: React.FC<CircleProgressBarProps> = ({
           transform="rotate(-90 50 50)"
         />
       </svg>
-      <div className="timer-text">{formatTime(timeLeft)}</div>
     </div>
   );
 };

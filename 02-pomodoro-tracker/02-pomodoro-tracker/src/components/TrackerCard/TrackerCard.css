@@ -32,6 +32,18 @@
   line-height: normal;
 }
 
+.timer-info{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
 @media screen and (max-width: 426px) {
   .tracker-card__container {
     padding: 24px;

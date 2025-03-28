@@ -2,6 +2,7 @@ import { useReducer, useEffect, useRef } from "react";
 import "./TrackerCard.css";
 import "react-circular-progressbar/dist/styles.css";
 import { formatTime } from "./utils";
+import CircleProgressBar from "../CircleProgressBar/CircleProgressBar";
 
 const MODES = {
   POMODORO: "Pomodoro",
@@ -53,11 +54,14 @@ const setTimerReducer = (
         state.currentMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO;
       const newTime =
         newMode === MODES.POMODORO ? DURATIONS.POMODORO : DURATIONS.BREAK;
+
       return {
         ...state,
         currentMode: newMode,
         timeLeft: newTime,
         currentState: "toStart",
+        pomodoros: state.currentMode === MODES.POMODORO && state.timeLeft === 0 ? state.pomodoros + 1 : state.pomodoros,
+        breaks: state.currentMode === MODES.BREAK && state.timeLeft === 0 ? state.breaks + 1 : state.breaks,
       };
     default:
       return state;
@@ -72,7 +76,7 @@ const TrackerCard = () => {
     if (state.currentState === "running") {
       intervalRef.current = setInterval(() => {
         dispatch({ type: "TICK" });
-      }, 100);
+      }, 10);
     } else if (
       state.currentState === "paused" ||
       state.currentState === "toStart"
@@ -111,6 +115,14 @@ const TrackerCard = () => {
     <div className="tracker-card__container">
       <h1>Pomodoro Tracker</h1>
       <div className="tracker-card__circularProgress">
+        <CircleProgressBar
+          duration={
+            state.currentMode === MODES.POMODORO
+              ? DURATIONS.POMODORO
+              : DURATIONS.BREAK
+          }
+          timeLeft={state.timeLeft}
+        />
         <div
           className="timer-text"
           style={
@@ -120,6 +132,11 @@ const TrackerCard = () => {
           }
         >
           {formatTime(state.timeLeft)}
+          <div className="timer-info">
+            {state.currentMode === MODES.POMODORO
+              ? `${state.pomodoros}x`
+              : `${state.breaks}x`}
+          </div>
         </div>
       </div>
       {state.currentState === "running" || state.currentState !== "toStart" ? (
