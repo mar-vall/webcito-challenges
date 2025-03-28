@@ -1,4 +1,4 @@
-.tracker-card__container {
+.tracker-card {
   display: inline-flex;
   padding: 48px;
   flex-direction: column;
@@ -20,7 +20,7 @@
     -4px -4px 16px 0px rgba(73, 73, 73, 0.4);
 }
 
-.timer-text {
+.circularProgress__timer {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -32,7 +32,7 @@
   line-height: normal;
 }
 
-.timer-info{
+.circularProgress__counter-info{
   position: absolute;
   top: 100%;
   left: 50%;
@@ -45,13 +45,13 @@
 }
 
 @media screen and (max-width: 426px) {
-  .tracker-card__container {
+  .tracker-card {
     padding: 24px;
     position: absolute;
   }
 }
 
-h1 {
+.tracker-card__title {
   margin: 0;
   font-size: 24px;
   font-style: normal;
