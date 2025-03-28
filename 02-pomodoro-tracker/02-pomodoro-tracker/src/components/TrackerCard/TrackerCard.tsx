@@ -1,6 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
+import { useReducer, useEffect, useRef } from "react";
 import "./TrackerCard.css";
 import "react-circular-progressbar/dist/styles.css";
+import { formatTime } from "./utils";
 import CircleProgressBar from "../CircleProgressBar/CircleProgressBar";
 
 const MODES = {
@@ -13,81 +14,148 @@ const DURATIONS = {
   BREAK: 5 * 60,
 };
 
+type STATES = "running" | "paused" | "finished" | "toStart";
+
+type TimeAction =
+  | { type: "START" }
+  | { type: "PAUSE" }
+  | { type: "CHANGE" }
+  | { type: "TICK" };
+
+interface SessionState {
+  timeLeft: number;
+  currentMode: string;
+  currentState: STATES;
+  breaks: number;
+  pomodoros: number;
+}
+
+const initialState: SessionState = {
+  timeLeft: DURATIONS.POMODORO,
+  currentMode: MODES.POMODORO,
+  currentState: "toStart",
+  breaks: 0,
+  pomodoros: 0,
+};
+
+const setTimerReducer = (
+  state: SessionState,
+  action: TimeAction
+): SessionState => {
+  switch (action.type) {
+    case "START":
+      return { ...state, currentState: "running" };
+    case "PAUSE":
+      return { ...state, currentState: "paused" };
+    case "TICK":
+      return { ...state, timeLeft: Math.max(0, state.timeLeft - 1) };
+    case "CHANGE":
+      const newMode =
+        state.currentMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO;
+      const newTime =
+        newMode === MODES.POMODORO ? DURATIONS.POMODORO : DURATIONS.BREAK;
+
+      return {
+        ...state,
+        currentMode: newMode,
+        timeLeft: newTime,
+        currentState: "toStart",
+        pomodoros: state.currentMode === MODES.POMODORO && state.timeLeft === 0 ? state.pomodoros + 1 : state.pomodoros,
+        breaks: state.currentMode === MODES.BREAK && state.timeLeft === 0 ? state.breaks + 1 : state.breaks,
+      };
+    default:
+      return state;
+  }
+};
+
 const TrackerCard = () => {
-  const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState(MODES.POMODORO);
-  const [isFirstStart, setIsFirstStart] = useState(true);
+  const [state, dispatch] = useReducer(setTimerReducer, initialState);
+  const intervalRef = useRef<number | null>(null);
 
-  // Función para cambiar entre modos
-  const toggleMode = useCallback(() => {
-    setMode((prevMode) =>
-      prevMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO
-    );
-  }, []);
-
-  // Función para manejar la finalización del temporizador
-  const handleComplete = useCallback(() => {
-    setMode((prevMode) =>
-      prevMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO
-    );
-    setIsRunning(false);
-    setIsFirstStart(false);
-  }, []);
-
-  // Función para iniciar o cambiar el modo del temporizador
-  const handleStartOrToggleMode = () => {
-    if (isFirstStart) {
-      setIsFirstStart(false);
-    } else {
-      toggleMode();
+  useEffect(() => {
+    if (state.currentState === "running") {
+      intervalRef.current = setInterval(() => {
+        dispatch({ type: "TICK" });
+      }, 10);
+    } else if (
+      state.currentState === "paused" ||
+      state.currentState === "toStart"
+    ) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
     }
-    setIsRunning(true);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [state.currentState]);
+
+  useEffect(() => {
+    if (state.timeLeft === 0 && state.currentState === "running") {
+      dispatch({ type: "CHANGE" });
+    }
+  }, [state.timeLeft]);
+
+  const handleStart = () => {
+    dispatch({ type: "START" });
   };
 
-  // Solicitar permiso para notificaciones al cargar el componente
-  useEffect(() => {
-    const requestNotificationPermission = async () => {
-      if ("Notification" in window) {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-          console.log("Permiso para notificaciones concedido.");
-        } else {
-          console.log("Permiso para notificaciones denegado.");
-        }
-      } else {
-        console.log("Este navegador no soporta notificaciones.");
-      }
-    };
-    requestNotificationPermission();
-  }, []);
+  const handleStop = () => {
+    if (state.currentState === "running") {
+      dispatch({ type: "PAUSE" });
+    } else {
+      dispatch({ type: "START" });
+    }
+  };
 
-  // Determinar la duración actual basada en el modo
-  const currentDuration =
-    mode === MODES.POMODORO ? DURATIONS.POMODORO : DURATIONS.BREAK;
+  const handleChange = () => {
+    dispatch({ type: "CHANGE" });
+  };
 
   return (
     <div className="tracker-card__container">
       <h1>Pomodoro Tracker</h1>
       <div className="tracker-card__circularProgress">
         <CircleProgressBar
-          duration={currentDuration}
-          onComplete={handleComplete}
-          isRunning={isRunning}
-          color={mode === MODES.POMODORO ? "#E046D7" : "#3AB499"}
-          mode={mode}
+          duration={
+            state.currentMode === MODES.POMODORO
+              ? DURATIONS.POMODORO
+              : DURATIONS.BREAK
+          }
+          timeLeft={state.timeLeft}
         />
+        <div
+          className="timer-text"
+          style={
+            state.currentMode === MODES.POMODORO
+              ? { color: "#E046D7" }
+              : { color: "#3AB499" }
+          }
+        >
+          {formatTime(state.timeLeft)}
+          <div className="timer-info">
+            {state.currentMode === MODES.POMODORO
+              ? `${state.pomodoros}x`
+              : `${state.breaks}x`}
+          </div>
+        </div>
       </div>
-      <button onClick={handleStartOrToggleMode}>
-        {isFirstStart
-          ? `Start ${MODES.POMODORO}`
-          : `Start ${mode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO}`}
-      </button>
+      {state.currentState === "running" || state.currentState !== "toStart" ? (
+        <button onClick={handleChange}>
+          Start{" "}
+          {state.currentMode === MODES.POMODORO ? MODES.BREAK : MODES.POMODORO}
+        </button>
+      ) : (
+        <button onClick={handleStart}>Start {state.currentMode}</button>
+      )}
       <button
-        className={`button-secondary ${isFirstStart ? "button-disabled" : ""}`}
-        onClick={() => setIsRunning(!isRunning)}
-        disabled={isFirstStart}
+        className={`button-secondary ${
+          state.currentState === "toStart" ? "button-disabled" : ""
+        }`}
+        onClick={handleStop}
+        disabled={state.currentState === "toStart"}
       >
-        {isRunning ? `Pause ${mode}` : `Resume ${mode}`}
+        {state.currentState === "running" ? "Pause " : "Resume "}
+        {state.currentMode}
       </button>
     </div>
   );
