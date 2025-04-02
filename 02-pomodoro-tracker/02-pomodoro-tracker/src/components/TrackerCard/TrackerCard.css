@@ -6,7 +6,7 @@
   align-items: center;
   gap: 24px;
   border-radius: 16px;
-  background: var(--Black, #141c27);
+  background: var(--background-card-color);
   position: fixed;
   top: 50%; /* Lo coloca en el 50% del alto del contenedor */
     left: 50%; /* Lo coloca en el 50% del ancho del contenedor */
@@ -57,6 +57,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  color: var(--text-title-color);
 }
 
 .tracker-card__circularProgress {
@@ -66,7 +67,7 @@
 }
 
 .button-secondary {
-  color: var(--Red, #f94409);
+  color: var(--text-secondary-buton-color);
 }
 
 .button-disabled {

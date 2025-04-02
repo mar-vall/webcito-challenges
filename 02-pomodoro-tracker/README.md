@@ -26,16 +26,16 @@ Para completar el reto, marca los siguientes hitos:
 - [x] Permitir que el usuario inicie un **Break** mientras está en un Pomodoro.
 - [x] Mostrar un **contador** de Pomodoros/Breaks completados.
 - [x] Asegurar que el diseño sea **responsive**.
-- [ ] Implementar una forma de **desplegar** la aplicación en línea.
+- [x] Implementar una forma de **desplegar** la aplicación en línea.
 
 ## 🚀 Objetivos secundarios
 Si quieres llevar tu implementación al siguiente nivel, intenta cumplir con estos retos adicionales:
 
 - [x] Implementar notificaciones sonoras al finalizar cada ciclo de Pomodoro o Break
 - [ ] Añadir un historial de sesiones completadas utilizando almacenamiento local (localStorage)
-- [ ] Optimizar el rendimiento para conseguir un puntaje superior a 90 en PageSpeed Insights
+- [x] Optimizar el rendimiento para conseguir un puntaje superior a 90 en PageSpeed Insights
 - [ ] Utilizar patrones avanzados de JavaScript como módulos, closures o el patrón Observer
-- [ ] Implementar un tema oscuro/claro con CSS variables y JavaScript
+- [x] Implementar un tema oscuro/claro con CSS variables y JavaScript
 - [ ] Crear tests unitarios para las funciones principales de la aplicación
 - [ ] Optimizar la aplicación para funcionar sin conexión (PWA)
 

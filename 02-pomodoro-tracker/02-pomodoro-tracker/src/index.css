@@ -1,14 +1,18 @@
 :root {
+  --background-color: #C8C8C8;
+  --circle-right-color: #cec6cd;
+  --circle-left-color: #bcb6b6;
+  --background-card-color: #c4dbd5;
+  --button-color: #6aa293;
+  --text-secondary-buton-color: #e1f55f;
+  --text-title-color: #604156;
+  --toggle-bg: #de77d0;
+  --toggle-fg: #a62795;
+
   font-family: Roboto;
 
-  /* color-scheme: light dark; */
   color: white;
-  background: var(--Bg, #172030);
 
-  /* font-synthesis: none; */
-  /* text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
 }
 
 body {
@@ -24,7 +28,7 @@ button {
   gap: 16px;
   border-radius: 8px;
   color: white;
-  background: var(--Button, #172030);
+  background: var(--button-color);
   border-width: 0;
 
   font-size: 16px;
@@ -40,15 +44,14 @@ button:hover {
     -4px -4px 16px 0px rgba(73, 73, 73, 0.4); 
 } 
 
-/* @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
+[data-theme = "dark"]{
+  --background-color: #172030;
+  --circle-right-color: #172030;
+  --circle-left-color: #1A2538;
+  --background-card-color: #141C27;
+  --button-color: #172030;
+  --text-secondary-buton-color: #F94409;
+  --text-title-color: white;
+  --toggle-bg: #283452;
+  --toggle-fg: #00a6ff;
+}
