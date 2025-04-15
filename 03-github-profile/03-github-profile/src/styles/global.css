@@ -1,1 +1,21 @@
 @import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #ffffff;
+  --color-btn-primary: #f7f8fa;
+  --color-btn-border: #9c9fa1;
+  --color-text-primary: #464747;
+  --color-badget: oklch(0.932 0.032 255.585);
+}
+
+@layer theme {
+    .dark {
+        --color-primary: #0D1117;
+        --color-btn-primary: #22262C;
+        --color-btn-border:#8B949E;
+        --color-text-primary: #8B949E;
+        --color-badget: #15223A;
+  }
+}

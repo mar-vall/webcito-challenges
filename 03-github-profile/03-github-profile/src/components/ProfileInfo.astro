@@ -1,14 +1,16 @@
 ---
 import {
+  HeartIcon,
   LinkIcon,
   LocationIcon,
   StarIcon,
   TwitterIcon,
   UsersIcon,
 } from '../assets/icons'
+
 ---
 
-<aside class="">
+<aside class="text-text-primary">
   <img
     class="w-64 h-64 rounded-full border border-slate-300"
     src="https://placehold.co/250x250"
@@ -23,12 +25,13 @@ import {
   </h2>
   <div class="inline-flex gap-2 py-2">
     <button
-      class="px-6 py-1 text-center rounded-lg outline text-sm font-medium leading-normal tracking-wide"
-      >Follow</button
+      class="px-9 py-1 bg-btn-primary outline-1 outline-btn-border text-center rounded-lg text-sm font-medium leading-normal tracking-wide"
+      >
+      Follow</button
     >
     <button
-      class="px-6 py-1 text-center rounded-lg outline text-sm font-medium leading-normal tracking-wide"
-      >Sponsor</button
+      class="px-6 py-1 inline-flex gap-1.5 text-center rounded-lg bg-btn-primary outline-1 outline-btn-border text-sm font-medium leading-normal tracking-wide"
+      ><HeartIcon/>Sponsor</button
     >
   </div>
   <p
@@ -44,8 +47,11 @@ import {
       >
     </li>
     <li class="pb-3">
-      <StarIcon />
-      <p>81</p>
+      <span class="inline-flex gap-1.5">
+
+        <StarIcon />
+        <p>81</p>
+      </span>
     </li>
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
@@ -54,13 +60,16 @@ import {
       </span>
     </li>
     <li class="pb-3">
-      <LinkIcon />
-      <a href="#"> link </a>
+      <span class="inline-flex gap-1.5">
+        <LinkIcon />
+        <a href="#"> link </a>
+      </span>
     </li>
     <li class="pb-3 inline-flex">
-      <TwitterIcon />
-
-      @LeonidasEsteban
+      <span class="inline-flex gap-1.5">
+        <TwitterIcon />
+        @LeonidasEsteban
+      </span>
     </li>
   </ul>
 </aside>
