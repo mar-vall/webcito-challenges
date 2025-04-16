@@ -1,0 +1,131 @@
+---
+// src/components/SelectDropdown.astro
+interface DropdownItem {
+  value: string;
+  label: string;
+  icon?: string;
+}
+
+interface Props {
+  items: DropdownItem[];
+  defaultSelected?: string;
+  onSelect?: (value: string) => void;
+}
+
+const { items, defaultSelected, onSelect } = Astro.props;
+const initialSelected = items.find(item => item.value === defaultSelected) || items[0];
+---
+
+<div class="relative inline-block w-full" id="dropdown-container">
+  <!-- Botón que muestra la selección actual -->
+  <button
+    type="button"
+    class="inline-flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+    id="dropdown-button"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+  >
+    <div class="flex items-center">
+      {initialSelected.icon && <span class="mr-2">{initialSelected.icon}</span>}
+      <span id="selected-label">{initialSelected.label}</span>
+    </div>
+    <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
+  </button>
+
+  <!-- Lista de opciones -->
+  <ul
+    class="hidden absolute z-10 w-full mt-1 bg-white shadow-lg rounded-md py-1 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-600"
+    id="dropdown-menu"
+    role="listbox"
+  >
+    {items.map((item) => (
+      <li
+        class="cursor-pointer select-none relative px-4 py-2 text-gray-900 hover:bg-indigo-500 hover:text-white dark:text-gray-200 dark:hover:bg-indigo-600"
+        data-value={item.value}
+        role="option"
+      >
+        <div class="flex items-center">
+          {item.icon && <span class="mr-2">{item.icon}</span>}
+          <span>{item.label}</span>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script is:inline>
+// Tipado para los elementos
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdown = {
+    container: document.getElementById('dropdown-container'),
+    button: document.getElementById('dropdown-button'),
+    menu: document.getElementById('dropdown-menu'),
+    selectedLabel: document.getElementById('selected-label')
+  };
+
+  if (!dropdown.button || !dropdown.menu) return;
+
+  // Estado actual
+  let currentSelection = {
+    value: '${initialSelected.value}',
+    label: '${initialSelected.label}',
+    icon: '${initialSelected.icon}'
+  }
+
+  // Manejar clic en el botón
+  dropdown.button.addEventListener('click', () => {
+    const isOpen = dropdown.menu.classList.contains('hidden');
+    dropdown.menu.classList.toggle('hidden', !isOpen);
+    dropdown.button.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Manejar clic en los ítems
+  dropdown.menu.querySelectorAll('li').forEach(item => {
+    item.addEventListener('click', (e) => {
+      const target = e.currentTarget;
+      const value = target.dataset.value || '';
+      const label = target.textContent?.trim() || '';
+      const icon = target.querySelector('span')?.textContent || '';
+      
+      // Actualizar selección
+      currentSelection = { value, label, icon };
+      dropdown.selectedLabel.textContent = label;
+      
+      // Actualizar UI
+      dropdown.menu.classList.add('hidden');
+      dropdown.button.setAttribute('aria-expanded', 'false');
+      
+      // Disparar evento personalizado
+      const selectEvent = new CustomEvent('dropdown-select', {
+        detail: { value, label, icon },
+        bubbles: true
+      });
+      dropdown.container.dispatchEvent(selectEvent);
+      
+      // Llamar al callback si existe
+      {onSelect(value)};
+    
+    });
+  });
+
+  // Cerrar al hacer clic fuera
+  document.addEventListener('click', (e) => {
+    if (!dropdown.container.contains(e.target)) {
+      dropdown.menu.classList.add('hidden');
+      dropdown.button.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Cerrar al presionar Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      dropdown.menu.classList.add('hidden');
+      dropdown.button.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+</script>

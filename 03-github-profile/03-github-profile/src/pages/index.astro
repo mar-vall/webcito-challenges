@@ -7,11 +7,26 @@ import Repositories from '../components/Repositories.astro'
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const response = await fetch('https://api.github.com/users/devferx');
+const userData = await response.json();
+
+const profileData = {
+  login: userData.login,
+  name: userData.name,
+  followers: userData.followers,
+  following: userData.following,
+  bio: userData.bio,
+  publicGists: userData.public_gists,
+  twitterUsername: userData.twitter_username,
+  avatarUrl: userData.avatar_url,
+  location: userData.location,
+  blog: userData.blog
+};
 ---
 
 <Layout>
   <div class="px-20 pt-10 grid grid-cols-5 bg-primary">
-    <ProfileInfo />
+    <ProfileInfo userData={profileData}/>
     <Repositories />
   </div>
 </Layout>

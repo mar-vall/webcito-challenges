@@ -8,20 +8,36 @@ import {
   UsersIcon,
 } from '../assets/icons'
 
+interface Props {
+  userData: {
+    login: string;
+    name: string | null;
+    followers: number;
+    following: number;
+    bio: string | null;
+    publicGists: number;
+    twitterUsername: string | null;
+    avatarUrl: string;
+    location: string | null;
+    blog: string | null;
+  };
+}
+
+const { userData } = Astro.props;
 ---
 
 <aside class="text-text-primary">
   <img
     class="w-64 h-64 rounded-full border border-slate-300"
-    src="https://placehold.co/250x250"
+    src={userData.avatarUrl}
   />
-  <h1 class="text-2xl font-semibold leading-loose tracking-wide">
-    Leonidas Esteban
+  <h1 class="text-2xl pt-2 font-semibold tracking-wide">
+    {userData.name ? userData.name : userData.login}
   </h1>
   <h2
     class="pb-3 text-slate-500 text-xl font-light leading-normal tracking-wide"
   >
-    Leonidas Esteban
+    {userData.login}
   </h2>
   <div class="inline-flex gap-2 py-2">
     <button
@@ -34,41 +50,41 @@ import {
       ><HeartIcon/>Sponsor</button
     >
   </div>
-  <p
+  {userData.bio && <p
     class="py-4 text-slate-400 text-base font-normal leading-normal tracking-wide"
   >
-    Software Engineer, Professor
-  </p>
+    {userData.bio}
+  </p>}
   <ul class="">
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
         <UsersIcon />
-        <b>4.6k</b> Followers · <b>60</b> Following ·</span
+        <b>{userData.followers}</b> Followers · <b>{userData.following}</b> Following ·</span
       >
     </li>
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
 
         <StarIcon />
-        <p>81</p>
+        <p>{userData.publicGists}</p>
       </span>
     </li>
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
         <LocationIcon />
-        Ciudad de Mexico
+        {userData.location}
       </span>
     </li>
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
         <LinkIcon />
-        <a href="#"> link </a>
+        <a href="#">{userData.blog}</a>
       </span>
     </li>
     <li class="pb-3 inline-flex">
       <span class="inline-flex gap-1.5">
         <TwitterIcon />
-        @LeonidasEsteban
+        {userData.twitterUsername}
       </span>
     </li>
   </ul>
