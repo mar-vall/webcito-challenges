@@ -26,11 +26,13 @@ interface Props {
 const { userData } = Astro.props;
 ---
 
-<aside class="text-text-primary">
-  <img
-    class="w-64 h-64 rounded-full border border-slate-300"
-    src={userData.avatarUrl}
-  />
+<aside class="text-text-primary w-full justify-center">
+  <div class="flex justify-center">
+    <img
+      class="xl:w-64 xl:h-64 rounded-full border border-slate-300"
+      src={userData.avatarUrl}
+    />
+  </div>
   <h1 class="text-2xl pt-2 font-semibold tracking-wide">
     {userData.name ? userData.name : userData.login}
   </h1>
@@ -39,19 +41,19 @@ const { userData } = Astro.props;
   >
     {userData.login}
   </h2>
-  <div class="inline-flex gap-2 py-2">
+  <div class="xl:flex gap-2 2xl:gap-4 py-2">
     <button
-      class="px-9 py-1 bg-btn-primary outline-1 outline-btn-border text-center rounded-lg text-sm font-medium leading-normal tracking-wide"
+      class="sm:px-9 h-full w-full xl:w-64 px-14 my-2 py-1 bg-btn-primary outline-1 outline-btn-border text-center rounded-lg text-sm font-medium leading-normal tracking-wide"
       >
       Follow</button
     >
     <button
-      class="px-6 py-1 inline-flex gap-1.5 text-center rounded-lg bg-btn-primary outline-1 outline-btn-border text-sm font-medium leading-normal tracking-wide"
+      class="sm:px-6 w-full px-9 py-1 my-1.5 inline-flex items-center justify-center gap-1.5 text-center rounded-lg bg-btn-primary outline-1 outline-btn-border text-sm font-medium leading-normal tracking-wide"
       ><HeartIcon/>Sponsor</button
     >
   </div>
   {userData.bio && <p
-    class="py-4 text-slate-400 text-base font-normal leading-normal tracking-wide"
+    class="py-4 dark:text-slate-400 text-base font-normal leading-normal tracking-wide"
   >
     {userData.bio}
   </p>}
@@ -64,7 +66,6 @@ const { userData } = Astro.props;
     </li>
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
-
         <StarIcon />
         <p>{userData.publicGists}</p>
       </span>
