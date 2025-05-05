@@ -1,19 +1,6 @@
 ---
-import DropdownButton from "./DropdownButton.astro";
 import RepositoryInfo from '../components/RepositoryInfo.astro';
 import type { GithubRepository } from '../interfaces/github-repository';
-
-const languages = [
-  { value: 'en', label: 'English', icon: '🇬🇧' },
-  { value: 'es', label: 'Español', icon: '🇪🇸' },
-  { value: 'fr', label: 'Français', icon: '🇫🇷' },
-];
-
-const handleLanguageSelect = (value: string) => {
-  console.log('Idioma seleccionado:', value);
-  // Aquí puedes actualizar el estado o hacer una petición
-}
-
 
 let repos: GithubRepository[] = [];
 let error: string | null = null;
@@ -49,15 +36,27 @@ try {
   <h4 class="text-xl font-semibold leading-normal tracking-wide">
     Repositories ({repos.length})
   </h4>
-  <section class="py-4">
-    <input type="text" class="border rounded-lg" />
-    <div class="max-w-xs mx-auto mt-8">
-      <!-- <DropdownButton 
-        items={languages} 
-        defaultSelected="es" 
-        onSelect={handleLanguageSelect}
-        client:load
-      /> -->
+  <section class="py-4 xl:flex xl:flex-row gap-4">
+    <input type="text" class="border rounded-lg w-full lg:basis-2/3" />
+    <div class="lg:basis-1/2">
+      <select name="Type" id="" class="rounded-lg bg-btn-primary p-2 outline-btn-border">
+        <option value="all" class="">All</option>
+        <option value="all">Sources</option>
+        <option value="all">Archived</option>
+        <option value="all">Mirrors</option>
+      </select>
+      <select name="Language" id="" class="rounded-lg bg-btn-primary p-2 outline-btn-border">
+        <option value="all" class="">All</option>
+        <option value="all">javascrip</option>
+        <option value="all">Archived</option>
+        <option value="all">Mirrors</option>
+      </select>
+      <select name="Sort" id="" class="rounded-lg bg-btn-primary p-2 outline-btn-border">
+        <option value="all" class="">All</option>
+        <option value="all">Sources</option>
+        <option value="all">Archived</option>
+        <option value="all">Mirrors</option>
+      </select>
     </div>
   </section>
   <hr class="mt-2 mb-5" />
