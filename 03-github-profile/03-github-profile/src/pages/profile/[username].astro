@@ -21,10 +21,15 @@ const [user, repos] = await Promise.all([
 if (!user) {
   return Response.redirect('/404', 404);
 }
+
+const currentTime = new Date().toLocaleTimeString();
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=30');
 ---
 <Layout>
     <div class="px-6 lg:px-20 pt-10 lg:grid lg:grid-cols-5 bg-primary">
         <ProfileInfo userData={user}/>
         <Repositories repos={repos}/>
     </div>
+    <p class="py-4 text-black">{currentTime}</p>
 </Layout>
