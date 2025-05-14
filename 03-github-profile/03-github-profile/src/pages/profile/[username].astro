@@ -1,0 +1,30 @@
+---
+import ProfileInfo from "../../components/ProfileInfo.astro";
+import Repositories from "../../components/Repositories.astro";
+import Layout from "../../layouts/Layout.astro";
+import {getGithubUser, getGithubRepos} from '../../services/githubService'
+
+export async function getStaticPaths() {
+  return [
+    { params: { username: 'devferx' } },
+    { params: { username: 'mar-vall' } },
+    { params: { username: 'facebook' } },
+  ];
+}
+
+const { username } = Astro.params;
+const [user, repos] = await Promise.all([
+  getGithubUser(username),
+  getGithubRepos(username)
+]);
+
+if (!user) {
+  return Response.redirect('/404', 404);
+}
+---
+<Layout>
+    <div class="px-6 lg:px-20 pt-10 lg:grid lg:grid-cols-5 bg-primary">
+        <ProfileInfo userData={user}/>
+        <Repositories repos={repos}/>
+    </div>
+</Layout>

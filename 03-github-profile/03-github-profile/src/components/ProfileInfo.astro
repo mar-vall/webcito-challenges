@@ -7,20 +7,10 @@ import {
   TwitterIcon,
   UsersIcon,
 } from '../assets/icons'
+import type { GithubUser } from '../interfaces/github-user';
 
 interface Props {
-  userData: {
-    login: string;
-    name: string | null;
-    followers: number;
-    following: number;
-    bio: string | null;
-    publicGists: number;
-    twitterUsername: string | null;
-    avatarUrl: string;
-    location: string | null;
-    blog: string | null;
-  };
+  userData: GithubUser;
 }
 
 const { userData } = Astro.props;
@@ -30,7 +20,7 @@ const { userData } = Astro.props;
   <div class="flex justify-center">
     <img
       class="xl:w-64 xl:h-64 rounded-full border border-slate-300"
-      src={userData.avatarUrl}
+      src={userData.avatar_url}
     />
   </div>
   <h1 class="text-2xl pt-2 font-semibold tracking-wide">
@@ -67,7 +57,7 @@ const { userData } = Astro.props;
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
         <StarIcon />
-        <p>{userData.publicGists}</p>
+        <p>{userData.public_gists}</p>
       </span>
     </li>
     <li class="pb-3">
@@ -85,7 +75,7 @@ const { userData } = Astro.props;
     <li class="pb-3 inline-flex">
       <span class="inline-flex gap-1.5">
         <TwitterIcon />
-        {userData.twitterUsername}
+        {userData.twitter_username}
       </span>
     </li>
   </ul>

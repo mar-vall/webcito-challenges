@@ -23,23 +23,23 @@ El objetivo de este reto es construir una réplica funcional de un perfil de Git
 ## 🎯 Objetivos principales
 Para completar el reto, marca los siguientes hitos:
 
-- [ ] Configurar el proyecto con **Next.js** o **Astro**.
+- [x] Configurar el proyecto con **Next.js** o **Astro**.
 - [ ] Implementar **ISR** para la generación de páginas estáticas.
-- [ ] Consumir la API de GitHub para obtener los datos del perfil y repositorios.
-- [ ] Replicar el diseño del perfil de GitHub según el Figma.
-- [ ] Asegurar que el diseño sea **responsive**.
+- [x] Consumir la API de GitHub para obtener los datos del perfil y repositorios.
+- [x] Replicar el diseño del perfil de GitHub según el Figma.
+- [x] Asegurar que el diseño sea **responsive**.
 - [ ] Implementar una forma de **desplegar** la aplicación en línea.
 
 ## 🚀 Objetivos secundarios
 Si quieres llevar tu implementación al siguiente nivel, intenta cumplir con estos retos adicionales:
 
-- [ ] Implementar un tema oscuro/claro con CSS variables y JavaScript.
+- [x] Implementar un tema oscuro/claro con CSS variables y JavaScript.
 - [ ] Añadir paginación para los repositorios si el usuario tiene muchos.
 - [ ] Optimizar el rendimiento para conseguir un puntaje superior a 90 en PageSpeed Insights.
-- [ ] Utilizar almacenamiento local (localStorage) para guardar configuraciones como el tema.
+- [x] Utilizar almacenamiento local (localStorage) para guardar configuraciones como el tema.
 - [ ] Crear tests unitarios para las funciones principales de la aplicación.
 - [ ] Optimizar la aplicación para funcionar sin conexión (PWA).
-- [ ] Permitir visualizar cualquier perfil de GitHub modificando la URL.
+- [x] Permitir visualizar cualquier perfil de GitHub modificando la URL.
 - [ ] Implementar una funcionalidad en la interfaz de usuario para cambiar el perfil de GitHub visualizado.
 
 ## 🚀 Pasos para participar
