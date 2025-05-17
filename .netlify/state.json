@@ -1,3 +1,20 @@
 {
-	"siteId": "37c3e8a7-bef9-40b2-aab5-7c7b4b5a6254"
+	"siteId": "37c3e8a7-bef9-40b2-aab5-7c7b4b5a6254",
+	"geolocation": {
+		"data": {
+			"city": "Cochabamba",
+			"country": {
+				"code": "BO",
+				"name": "Bolivia"
+			},
+			"subdivision": {
+				"code": "C",
+				"name": "Departamento de Cochabamba"
+			},
+			"timezone": "America/La_Paz",
+			"latitude": -17.3822,
+			"longitude": -66.1518
+		},
+		"timestamp": 1747445459458
+	}
 }

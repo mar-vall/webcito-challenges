@@ -1,17 +1,20 @@
-// @ts-check
-import tailwindcss from '@tailwindcss/vite'
+// astro.config.mjs
 import { defineConfig } from 'astro/config'
+import preact from '@astrojs/preact'
+import netlify from '@astrojs/netlify'
+import tailwindcss from '@tailwindcss/vite'
 
-import preact from '@astrojs/preact';
-
-import netlify from '@astrojs/netlify';
-
-// https://astro.build/config
 export default defineConfig({
+  output: 'server',
+
+  integrations: [
+    preact(),
+    // netlify({ mode: 'functions' }) // ⚠️ esto es crucial
+  ],
+
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss()]
   },
 
-  integrations: [preact()],
-  adapter: netlify(),
+  adapter: netlify()
 })

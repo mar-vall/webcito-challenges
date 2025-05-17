@@ -1,24 +1,39 @@
 ---
+export const prerender = false;
+
 import ProfileInfo from "../../components/ProfileInfo.astro";
 import Repositories from "../../components/Repositories.astro";
 import Layout from "../../layouts/Layout.astro";
 import {getGithubUser, getGithubRepos} from '../../services/githubService'
 
 export async function getStaticPaths() {
-  return [
-    { params: { username: 'devferx' } },
-    { params: { username: 'mar-vall' } },
-    { params: { username: 'facebook' } },
-  ];
+  // Puedes mantener algunos perfiles pre-generados para mejor performance
+  const predefinedUsers = ['devferx', 'mar-vall', 'facebook'];
+  
+  return predefinedUsers.map(username => ({
+    params: { username },
+    props: { isPredefined: true } // Prop adicional para identificar rutas pre-generadas
+  }));
 }
 
 const { username } = Astro.params;
-const [user, repos] = await Promise.all([
-  getGithubUser(username),
-  getGithubRepos(username)
-]);
+console.log('user', username)
+let user, repos;
 
-if (!user) {
+try {
+  [user, repos] = await Promise.all([
+    getGithubUser(username),
+    getGithubRepos(username)
+  ]);
+  
+  // if (!user) {
+  //   throw new Error('Usuario no encontrado');
+  // }
+  if (!user) {
+  return new Response(null, { status: 404 });
+}
+} catch (error) {
+  // Redirigir a 404 si falla la obtención de datos
   return Response.redirect('/404', 404);
 }
 
