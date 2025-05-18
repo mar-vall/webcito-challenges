@@ -1,50 +1,54 @@
 ---
-export const prerender = false;
+export const prerender = false
 
-import ProfileInfo from "../../components/ProfileInfo.astro";
-import Repositories from "../../components/Repositories.astro";
-import Layout from "../../layouts/Layout.astro";
-import {getGithubUser, getGithubRepos} from '../../services/githubService'
+import ProfileInfo from '../../components/ProfileInfo.astro'
+import Repositories from '../../components/Repositories.astro'
+import Layout from '../../layouts/Layout.astro'
+import { getGithubUser, getGithubRepos } from '../../services/githubService'
 
 export async function getStaticPaths() {
   // Puedes mantener algunos perfiles pre-generados para mejor performance
-  const predefinedUsers = ['devferx', 'mar-vall', 'facebook'];
-  
-  return predefinedUsers.map(username => ({
+  const predefinedUsers = ['devferx', 'mar-vall', 'facebook']
+
+  return predefinedUsers.map((username) => ({
     params: { username },
-    props: { isPredefined: true } // Prop adicional para identificar rutas pre-generadas
-  }));
+    props: { isPredefined: true }, // Prop adicional para identificar rutas pre-generadas
+  }))
 }
 
-const { username } = Astro.params;
+const { username } = Astro.params
 console.log('user', username)
-let user, repos;
+let user, repos
 
 try {
-  [user, repos] = await Promise.all([
+  ;[user, repos] = await Promise.all([
     getGithubUser(username),
-    getGithubRepos(username)
-  ]);
-  
+    getGithubRepos(username),
+  ])
+
   // if (!user) {
   //   throw new Error('Usuario no encontrado');
   // }
   if (!user) {
-  return new Response(null, { status: 404 });
-}
+    return new Response(null, { status: 404 })
+  }
 } catch (error) {
   // Redirigir a 404 si falla la obtención de datos
-  return Response.redirect('/404', 404);
+  return Response.redirect('/404', 404)
 }
 
-const currentTime = new Date().toLocaleTimeString();
+const currentTime = new Date().toLocaleTimeString()
 
-Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=30');
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, s-maxage=300, stale-while-revalidate=30',
+)
 ---
+
 <Layout>
-    <div class="px-6 lg:px-20 pt-10 lg:grid lg:grid-cols-5 bg-primary">
-        <ProfileInfo userData={user}/>
-        <Repositories repos={repos}/>
-    </div>
-    <p class="py-4 text-black">{currentTime}</p>
+  <div class="px-6 lg:px-20 pt-10 lg:grid lg:grid-cols-5 bg-primary">
+    <ProfileInfo userData={user} />
+    <Repositories repos={repos} />
+  </div>
+  <p class="py-4 text-black">{currentTime}</p>
 </Layout>

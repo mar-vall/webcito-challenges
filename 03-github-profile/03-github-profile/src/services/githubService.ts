@@ -7,10 +7,10 @@ export async function getGithubUser(
   try {
     const response = await fetch(`https://api.github.com/users/${username}`)
 
-    if (response.status === 404) return null;
-    if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+    if (response.status === 404) return null
+    if (!response.ok) throw new Error(`GitHub API error: ${response.status}`)
 
-    const data = await response.json();
+    const data = await response.json()
     return {
       login: data.login,
       name: data.name,
@@ -21,8 +21,8 @@ export async function getGithubUser(
       twitter_username: data.twitter_username,
       avatar_url: data.avatar_url,
       location: data.location,
-      blog: data.blog
-    };
+      blog: data.blog,
+    }
   } catch (error) {
     console.error('Error fetching GitHub user:', error)
     return null
@@ -48,24 +48,31 @@ export async function getGithubRepos(
     )
 
     if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `GitHub API error: ${response.status} ${response.statusText}`,
+      )
     }
 
-    const data = await response.json();
-    
-    return data.map((repo: any): GithubRepository => ({
-      name: repo.name,
-      visibility: repo.visibility || (repo.private ? 'private' : 'public'),
-      description: repo.description,
-      forks_count: repo.forks_count,
-      language: repo.language,
-      topics: repo.topics || [],
-      updated_at: repo.updated_at,
-      stargazers_count: repo.stargazers_count,
-      html_url: repo.html_url
-    })).sort((a: GithubRepository, b: GithubRepository) => 
-      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-    );
+    const data = await response.json()
+
+    return data
+      .map(
+        (repo: any): GithubRepository => ({
+          name: repo.name,
+          visibility: repo.visibility || (repo.private ? 'private' : 'public'),
+          description: repo.description,
+          forks_count: repo.forks_count,
+          language: repo.language,
+          topics: repo.topics || [],
+          updated_at: repo.updated_at,
+          stargazers_count: repo.stargazers_count,
+          html_url: repo.html_url,
+        }),
+      )
+      .sort(
+        (a: GithubRepository, b: GithubRepository) =>
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+      )
   } catch (error) {
     console.error('Error fetching GitHub repos:', error)
     return []

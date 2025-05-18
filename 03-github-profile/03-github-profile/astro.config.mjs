@@ -13,8 +13,8 @@ export default defineConfig({
   ],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
 
-  adapter: netlify()
+  adapter: netlify(),
 })

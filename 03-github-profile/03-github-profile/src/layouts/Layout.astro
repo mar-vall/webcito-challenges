@@ -1,6 +1,6 @@
 ---
-import ThemeToggle from "../components/ThemeToggle";
-import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle'
+import '../styles/global.css'
 ---
 
 <!doctype html>
@@ -13,8 +13,10 @@ import '../styles/global.css';
     <title>Gitlist</title>
   </head>
   <body>
-    <header class="container mx-auto flex justify-between items-center relative">
-      <ThemeToggle client:load/>
+    <header
+      class="container mx-auto flex justify-between items-center relative"
+    >
+      <ThemeToggle client:load />
     </header>
     <slot />
   </body>

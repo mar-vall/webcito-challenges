@@ -24,11 +24,11 @@ El objetivo de este reto es construir una réplica funcional de un perfil de Git
 Para completar el reto, marca los siguientes hitos:
 
 - [x] Configurar el proyecto con **Next.js** o **Astro**.
-- [ ] Implementar **ISR** para la generación de páginas estáticas.
+- [x] Implementar **ISR** para la generación de páginas estáticas.
 - [x] Consumir la API de GitHub para obtener los datos del perfil y repositorios.
 - [x] Replicar el diseño del perfil de GitHub según el Figma.
 - [x] Asegurar que el diseño sea **responsive**.
-- [ ] Implementar una forma de **desplegar** la aplicación en línea.
+- [x] Implementar una forma de **desplegar** la aplicación en línea.
 
 ## 🚀 Objetivos secundarios
 Si quieres llevar tu implementación al siguiente nivel, intenta cumplir con estos retos adicionales:
@@ -40,7 +40,7 @@ Si quieres llevar tu implementación al siguiente nivel, intenta cumplir con est
 - [ ] Crear tests unitarios para las funciones principales de la aplicación.
 - [ ] Optimizar la aplicación para funcionar sin conexión (PWA).
 - [x] Permitir visualizar cualquier perfil de GitHub modificando la URL.
-- [ ] Implementar una funcionalidad en la interfaz de usuario para cambiar el perfil de GitHub visualizado.
+- [x] Implementar una funcionalidad en la interfaz de usuario para cambiar el perfil de GitHub visualizado.
 
 ## 🚀 Pasos para participar
 1. **Hacer fork** del repositorio de Webcito Challenges.

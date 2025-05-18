@@ -7,51 +7,56 @@ import {
   TwitterIcon,
   UsersIcon,
 } from '../assets/icons'
-import type { GithubUser } from '../interfaces/github-user';
+import type { GithubUser } from '../interfaces/github-user'
 
 interface Props {
-  userData: GithubUser;
+  userData: GithubUser
 }
 
-const { userData } = Astro.props;
+const { userData } = Astro.props
 ---
 
 <aside class="text-text-primary w-full justify-center">
-  <div class="flex justify-center">
+  <div class="flex lg:block justify-start gap-4 items-center">
     <img
-      class="xl:w-64 xl:h-64 rounded-full border border-slate-300"
+      class="xl:w-64 w-20 md:w-36 md:h-36 h-20 xl:h-64 rounded-full border border-slate-300"
       src={userData.avatar_url}
     />
+    <div>
+      <h1 class="text-2xl pt-2 font-semibold tracking-wide">
+        {userData.name ? userData.name : userData.login}
+      </h1>
+      <h2
+        class="pb-3 text-slate-500 text-xl font-light leading-normal tracking-wide"
+      >
+        {userData.login}
+      </h2>
+    </div>
   </div>
-  <h1 class="text-2xl pt-2 font-semibold tracking-wide">
-    {userData.name ? userData.name : userData.login}
-  </h1>
-  <h2
-    class="pb-3 text-slate-500 text-xl font-light leading-normal tracking-wide"
-  >
-    {userData.login}
-  </h2>
   <div class="xl:flex gap-2 2xl:gap-4 py-2">
     <button
       class="sm:px-9 h-full w-full xl:w-64 px-14 my-2 py-1 bg-btn-primary outline-1 outline-btn-border text-center rounded-lg text-sm font-medium leading-normal tracking-wide"
-      >
+    >
       Follow</button
     >
     <button
       class="sm:px-6 w-full px-9 py-1 my-1.5 inline-flex items-center justify-center gap-1.5 text-center rounded-lg bg-btn-primary outline-1 outline-btn-border text-sm font-medium leading-normal tracking-wide"
-      ><HeartIcon/>Sponsor</button
+      ><HeartIcon />Sponsor</button
     >
   </div>
-  {userData.bio && <p
-    class="py-4 dark:text-slate-400 text-base font-normal leading-normal tracking-wide"
-  >
-    {userData.bio}
-  </p>}
+  {
+    userData.bio && (
+      <p class="py-4 dark:text-slate-400 text-base font-normal leading-normal tracking-wide">
+        {userData.bio}
+      </p>
+    )
+  }
   <ul class="">
     <li class="pb-3">
       <span class="inline-flex gap-1.5">
         <UsersIcon />
-        <b>{userData.followers}</b> Followers · <b>{userData.following}</b> Following ·</span
+        <b>{userData.followers}</b> Followers · <b>{userData.following}</b> Following
+        ·</span
       >
     </li>
     <li class="pb-3">

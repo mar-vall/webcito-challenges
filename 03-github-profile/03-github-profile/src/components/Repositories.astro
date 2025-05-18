@@ -1,13 +1,12 @@
 ---
-import RepositoryInfo from '../components/RepositoryInfo.astro';
-import type { GithubRepository } from '../interfaces/github-repository';
-
+import RepositoryInfo from '../components/RepositoryInfo.astro'
+import type { GithubRepository } from '../interfaces/github-repository'
+import { formatDistanceToNow } from 'date-fns'
 interface Props {
   repos: Array<GithubRepository>
 }
 
-const { repos } = Astro.props;
-
+const { repos } = Astro.props
 ---
 
 <main class="col-span-4 lg:pl-10 text-text-primary">
@@ -16,20 +15,32 @@ const { repos } = Astro.props;
   </h4>
   <section class="py-4 xl:flex xl:flex-row gap-4">
     <input type="text" class="border rounded-lg w-full lg:basis-2/3" />
-    <div class="lg:basis-1/2">
-      <select name="Type" id="" class="rounded-lg bg-btn-primary p-2 outline-btn-border">
+    <div class="lg:basis-1/2 md:pt-2">
+      <select
+        name="Type"
+        id=""
+        class="rounded-lg bg-btn-primary p-2 outline-btn-border"
+      >
         <option value="all" class="">All</option>
         <option value="all">Sources</option>
         <option value="all">Archived</option>
         <option value="all">Mirrors</option>
       </select>
-      <select name="Language" id="" class="rounded-lg bg-btn-primary p-2 outline-btn-border">
+      <select
+        name="Language"
+        id=""
+        class="rounded-lg bg-btn-primary p-2 outline-btn-border"
+      >
         <option value="all" class="">All</option>
         <option value="all">javascrip</option>
         <option value="all">Archived</option>
         <option value="all">Mirrors</option>
       </select>
-      <select name="Sort" id="" class="rounded-lg bg-btn-primary p-2 outline-btn-border">
+      <select
+        name="Sort"
+        id=""
+        class="rounded-lg bg-btn-primary p-2 outline-btn-border"
+      >
         <option value="all" class="">All</option>
         <option value="all">Sources</option>
         <option value="all">Archived</option>
@@ -39,15 +50,15 @@ const { repos } = Astro.props;
   </section>
   <hr class="mt-2 mb-5" />
   {
-  // error ? (
-  //   <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-  //     Error al cargar repositorios: {error}
-  //   </div>
-  // ) : 
-  repos.length === 0 ? (
-    <p>No se encontraron repositorios</p>
-  ) : (
-    repos.map(repo => (
+    // error ? (
+    //   <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+    //     Error al cargar repositorios: {error}
+    //   </div>
+    // ) :
+    repos.length === 0 ? (
+      <p>No se encontraron repositorios</p>
+    ) : (
+      repos.map((repo) => (
         <RepositoryInfo
           repo={{
             name: repo.name,
@@ -56,11 +67,14 @@ const { repos } = Astro.props;
             forksCount: repo.forks_count,
             language: repo.language,
             topics: repo.topics,
-            updatedAt: repo.updated_at,
+            updatedAt: formatDistanceToNow(repo.updated_at, {
+              addSuffix: true,
+            }),
             stargazersCount: repo.stargazers_count,
-            url: repo.html_url
+            url: repo.html_url,
           }}
         />
       ))
-  )}
+    )
+  }
 </main>
